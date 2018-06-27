@@ -1,0 +1,37 @@
+{
+  "ExternalLoadBalancer": {
+    "DependsOn": [
+      "AttachGateway",
+      "ExternalLoadBalancerSG",
+      "PubSubnetAz1",
+      "PubSubnetAz2",
+      "PubSubnetAz3"
+    ],
+    "Properties": {
+      "ConnectionSettings": {
+        "IdleTimeout": 600
+      },
+      "CrossZone": "true",
+      "HealthCheck": {
+        "HealthyThreshold": "2",
+        "Interval": "10",
+        "Target": "HTTP:44554/",
+        "Timeout": "8",
+        "UnhealthyThreshold": "4"
+      },
+      "Listeners": [
+        {
+          "InstancePort": "7",
+          "LoadBalancerPort": "7",
+          "Protocol": "TCP"
+        },
+
+        {
+          "InstancePort": "80",
+          "LoadBalancerPort": "80",
+          "Protocol": "HTTP"
+        }
+      ]
+    }
+  }
+}
