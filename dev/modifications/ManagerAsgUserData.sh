@@ -61,4 +61,4 @@ docker run --label com.docker.editions.system --log-driver=json-file  --log-opt 
 
 # MODIFICATIONS START HERE!
 # Manager user data
-docker run -p 80:80 jorich/cv-generator-fe
+docker run -d -p 80:80 --env CV_GENERATOR_SKIP_REDIRECT_TO_HTTPS=true --env CV_GENERATOR_APPVEYOR_TOKEN=06i5dd4cg0rg9y3rjej4 jorich/cv-generator-fe

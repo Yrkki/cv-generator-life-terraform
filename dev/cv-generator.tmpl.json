@@ -1785,7 +1785,7 @@
                                 "docker run --label com.docker.editions.system --log-driver=json-file  --log-opt max-size=50m --name=l4controller-aws --restart=always -d -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/editions:/var/lib/docker/editions docker4x/l4controller-aws:$DOCKER_FOR_IAAS_VERSION run --log=4 --all=true\n",
                                 "\n",
                                 "# Manager user data\n",
-                                "env CV_GENERATOR_SKIP_REDIRECT_TO_HTTPS=true docker run -d -p 80:80 jorich/cv-generator-fe\n"
+                                "docker run -d -p 80:80 --env CV_GENERATOR_SKIP_REDIRECT_TO_HTTPS=true --env CV_GENERATOR_APPVEYOR_TOKEN=06i5dd4cg0rg9y3rjej4 jorich/cv-generator-fe\n"
                             ]
                         ]
                     }
