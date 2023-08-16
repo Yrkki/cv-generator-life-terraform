@@ -157,6 +157,9 @@ resource "aws_lb" "alb" {
   internal           = false
   load_balancer_type = "application"
 
+  drop_invalid_header_fields = true
+  enable_deletion_protection = true
+
   subnets            = concat(aws_subnet.public_subnets[*].id)
   security_groups    = [aws_security_group.public.id]
 }
