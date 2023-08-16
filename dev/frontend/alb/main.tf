@@ -1,9 +1,15 @@
 provider "aws" {
   region = "eu-west-1"
+
+  # # # marinov
+  # assume_role {
+  #   role_arn = "arn:aws:iam::801610064192:role/FederatedAccess"
+  # }
 }
 
 locals {
   alb_name = "cv-generator"
+  # # Route53 _name = "cvgenerator.marinov.link"
 }
 
 resource "aws_lb" "alb" {
@@ -11,9 +17,17 @@ resource "aws_lb" "alb" {
   internal           = false
   load_balancer_type = "application"
 
+  # # jorich
   # vpc_id             = "vpc-0e29045db07590c8a"
   subnets            = ["subnet-0494e737df7af5484", "subnet-0b33c43f036ae58c8"]
   security_groups    = ["sg-0bbd845a7c8739d08"]
+  # cv-generator-1364414253.eu-west-1.elb.amazonaws.com
+
+  # # # marinov
+  # # vpc_id             = "vpc-015b9b620505bbb9c"
+  # subnets            = ["subnet-0ae838ecbd8df1405", "subnet-04e7fdca7750b30d5", "subnet-05168b4d43cf7a021"]
+  # security_groups    = ["sg-0b2b904ce46ebed0c"]
+  # # # cv-generator-360564224.eu-west-1.elb.amazonaws.com
 }
 
 resource "aws_lb_listener" "listener" {
