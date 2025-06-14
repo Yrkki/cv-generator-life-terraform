@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::802807423235:root",
+          "arn:aws:iam::568354555100:root",
+          "arn:aws:iam::801610064192:root",
+          "arn:aws:iam::864981721433:root",
+          "arn:aws:iam::126159560176:root",
+          "arn:aws:iam::956474664196:root",
+          "arn:aws:iam::341292795870:root",
+          "arn:aws:iam::743122510778:root",
+          "arn:aws:iam::640693977485:root"
+        ]
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {}
+    }
+  ]
+}
