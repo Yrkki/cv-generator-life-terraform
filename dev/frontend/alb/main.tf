@@ -1,3 +1,10 @@
+# Parameters
+#############################################
+locals {
+  default_account_alias     = "yrkki"
+  vpc_cidr_prefix   = "172.64"
+}
+
 # Variables
 #############################################
 variable "naming" {
@@ -14,16 +21,12 @@ variable "hosting" {
   description = "Hosting platform domain name"
   default     = "herokuapp.com"
 }
-variable "default_account_alias" {
-  type        = string
-  description = "Default account alias"
-  default     = "jorich2018"
-}
 variable "account_id" {
   type        = map(string)
   description = "Account ID"
   default = {
     marinov    = "801610064192"
+    yrkki      = "864981721433"
     jorich     = "802807423235"
     jorich2018 = "956474664196"
   }
@@ -38,16 +41,6 @@ variable "azs" {
   description = "Availability zones"
   default     = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 }
-variable "vpc_cidr" {
-  type        = string
-  description = "VPC CIDR"
-  default     = "172.48.0.0/16"
-}
-variable "public_subnet_cidrs" {
-  type        = list(string)
-  description = "Public subnet CIDR values"
-  default     = ["172.48.0.0/24", "172.48.20.0/24", "172.48.40.0/24"]
-}
 variable "lb_access_logs_s3_bucket_name" {
   type        = string
   description = "Load balancer access logs S3 bucket name"
@@ -59,8 +52,10 @@ variable "lb_access_logs_s3_bucket_name" {
 locals {
   config = {
     description = "Configuration data"
+    vpc_cidr     = "${local.vpc_cidr_prefix}.0.0/16"
+    public_subnet_cidrs     = ["${local.vpc_cidr_prefix}.0.0/24", "${local.vpc_cidr_prefix}.20.0/24", "${local.vpc_cidr_prefix}.40.0/24"]
     # # Route53 _name = "${var.naming.short_name}.marinov.link"
-    role_arn = "arn:aws:iam::${var.account_id[var.default_account_alias]}:role/FederatedAccess"
+    role_arn = "arn:aws:iam::${var.account_id[local.default_account_alias]}:role/FederatedAccess"
   }
 }
 
@@ -77,7 +72,7 @@ provider "aws" {
 # VPC
 #############################################
 resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr
+  cidr_block = local.config.vpc_cidr
 
   tags = {
     Name = "${var.naming.name}-vpc"
@@ -85,9 +80,9 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "public_subnets" {
-  count             = length(var.public_subnet_cidrs)
+  count             = length(local.config.public_subnet_cidrs)
   vpc_id            = aws_vpc.main.id
-  cidr_block        = element(var.public_subnet_cidrs, count.index)
+  cidr_block        = element(local.config.public_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
 
   tags = {
@@ -110,7 +105,7 @@ resource "aws_route" "r" {
 }
 
 resource "aws_route_table_association" "public_subnet_asso" {
-  count          = length(var.public_subnet_cidrs)
+  count          = length(local.config.public_subnet_cidrs)
   subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
   route_table_id = aws_vpc.main.default_route_table_id
 }
@@ -163,7 +158,7 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
 
   drop_invalid_header_fields = true
-  enable_deletion_protection = true
+  enable_deletion_protection = false
   access_logs {
     bucket  = var.lb_access_logs_s3_bucket_name
     enabled = true
