@@ -1,7 +1,7 @@
 # Parameters
 #############################################
 locals {
-  default_account_alias     = "yrkki"
+  default_account_alias     = "jorich2018"
   vpc_cidr_prefix   = "172.64"
 }
 
@@ -45,6 +45,12 @@ variable "lb_access_logs_s3_bucket_name" {
   type        = string
   description = "Load balancer access logs S3 bucket name"
   default     = "elb-access-logs-marinov"
+}
+
+variable "app_runner_endpoint" {
+  type        = string
+  description = "App Runner endpoint"
+  default     = "pzrydhpd2v.eu-west-1.awsapprunner.com"
 }
 
 # Locals
@@ -223,6 +229,28 @@ resource "aws_lb_listener_rule" "cv-generator-eu" {
     http_request_method { values = ["GET"] }
   }
 }
+
+
+resource "aws_lb_listener_rule" "cv-generator-fe-c" {
+  listener_arn = aws_lb_listener.listener.arn
+
+  action {
+    type = "redirect"
+    redirect {
+      host        = "${var.app_runner_endpoint}"
+      path        = "/#{path}"
+      query       = "#{query}"
+      protocol    = "HTTPS"
+      port        = "443"
+      status_code = "HTTP_301"
+    }
+  }
+
+  condition {
+    http_request_method { values = ["GET"] }
+  }
+}
+
 
 # WAF
 #############################################
