@@ -50,3 +50,12 @@ Thumbs.db
 sandbox*
 
 /dev/frontend/dns*
+
+# Ignore log files
+**/*.log
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
+
+# Ignore S3 inventory files
+scripts/s3-inventory/s3-inventory*.*

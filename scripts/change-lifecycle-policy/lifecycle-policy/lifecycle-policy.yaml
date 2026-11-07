@@ -1,0 +1,21 @@
+Rules:
+- ID: RetentionRule
+  Status: Enabled
+  Filter:
+    Prefix: ""
+  Expiration:
+    Days: 365
+  NoncurrentVersionExpiration:
+    NoncurrentDays: 1
+
+- ID: abort-incomplete-multipart
+  Status: Enabled
+  Filter: {}
+  AbortIncompleteMultipartUpload:
+    DaysAfterInitiation: 7
+
+- ID: delete-markers-cleanup
+  Status: Enabled
+  Filter: {}
+  Expiration:
+    ExpiredObjectDeleteMarker: true

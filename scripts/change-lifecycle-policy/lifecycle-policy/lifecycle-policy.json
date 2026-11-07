@@ -1,0 +1,33 @@
+{
+    "Rules": [
+        {
+            "Expiration": {
+                "Days": 365
+            },
+            "ID": "RetentionRule",
+            "Filter": {
+                "Prefix": ""
+            },
+            "Status": "Enabled",
+            "NoncurrentVersionExpiration": {
+                "NoncurrentDays": 1
+            }
+        },
+        {
+            "ID": "abort-incomplete-multipart",
+            "Filter": {},
+            "Status": "Enabled",
+            "AbortIncompleteMultipartUpload": {
+                "DaysAfterInitiation": 7
+            }
+        },
+        {
+            "Expiration": {
+                "ExpiredObjectDeleteMarker": true
+            },
+            "ID": "delete-markers-cleanup",
+            "Filter": {},
+            "Status": "Enabled"
+        }
+    ]
+}
