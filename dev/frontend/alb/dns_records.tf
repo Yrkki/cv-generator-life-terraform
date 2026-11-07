@@ -1,3 +1,4 @@
+/*
 # Note: This is a conceptual Terraform file.
 # Replace 'example_zone_id' and 'cloudfront_hosted_zone_id' with the 
 # actual Zone ID and the correct Hosted Zone ID for CloudFront 
@@ -56,3 +57,4 @@ resource "aws_route53_record" "maintenance_aaaa" {
     evaluate_target_health = false
   }
 }
+*/
