@@ -5,12 +5,12 @@ provider "aws" {
 resource "aws_cloudformation_stack" "network" {
   name = "CvGenerator"
   capabilities = ["CAPABILITY_IAM"]
-  
-  parameters {
+
+  parameters = {
     ManagerSize = "1"
     ClusterSize = "1"
     KeyName = "docker"
   }
 
-  template_body = "${file("cv-generator.tmpl.json")}"
+  template_body = file("cv-generator.tmpl.json")
 }
